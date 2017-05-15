@@ -25,7 +25,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
 	std::normal_distribution<double> y_dist(y, std[1]);
 	std::normal_distribution<double> theta_dist(theta, std[2]);
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-	std::default_random_engine generator(seed);
+	std::mt19937 generator(seed);
 	num_particles = 10;
 	particles.clear();
 	for (size_t i; i < num_particles; ++i) {
@@ -49,7 +49,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
 	std::normal_distribution<double> y_dist(0, std_pos[1]);
 	std::normal_distribution<double> theta_dist(0, std_pos[2]);
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-	std::default_random_engine generator(seed);
+	std::mt19937 generator(seed);
 	double d_theta = yaw_rate * delta_t;
 	double d_pos = velocity * delta_t;
 	for (std::vector<Particle>::iterator p = particles.begin();
@@ -144,7 +144,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 void ParticleFilter::resample() {
 	// Find the max weight
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-	std::default_random_engine generator(seed);
+	std::mt19937 generator(seed);
 	double max_weight = 0;
 	for (std::vector<Particle>::const_iterator p = particles.begin();
 			p != particles.end(); ++p) {
